@@ -9,8 +9,25 @@ const books = [
   { id: '2', title: 'Pride and Prejudice', author: 'Jane Austen' }
 ];
 
-router.get('/', (_req, res) => {
-  res.json({ data: books });
+router.get('/', (req, res) => {
+  const { limit: limitParam, offset: offsetParam = '0' } = req.query;
+  const isNonNegativeInteger = (value) => typeof value === 'string' && /^\d+$/.test(value);
+
+  if (limitParam !== undefined && (!isNonNegativeInteger(limitParam) || Number(limitParam) < 1)) {
+    return res.status(400).json({ error: 'limit must be a positive integer.' });
+  }
+  if (!isNonNegativeInteger(offsetParam)) {
+    return res.status(400).json({ error: 'offset must be a non-negative integer.' });
+  }
+
+  const limit = limitParam === undefined ? null : Number(limitParam);
+  const offset = Number(offsetParam);
+  if ((limit !== null && !Number.isSafeInteger(limit)) || !Number.isSafeInteger(offset)) {
+    return res.status(400).json({ error: 'limit and offset must be safe integers.' });
+  }
+
+  const data = books.slice(offset, limit === null ? undefined : offset + limit);
+  return res.json({ data, pagination: { total: books.length, limit, offset } });
 });
 
 router.get('/:id', (req, res) => {

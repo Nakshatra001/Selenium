@@ -34,3 +34,16 @@ test('books list and create endpoints work', async () => {
   assert.equal(createResponse.status, 201);
   assert.equal((await createResponse.json()).data.title, 'Test Book');
 });
+
+test('books list supports pagination and validates query parameters', async () => {
+  const response = await fetch(`${baseUrl}/api/books?limit=1&offset=1`);
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.data.length, 1);
+  assert.equal(result.pagination.total >= 2, true);
+  assert.equal(result.pagination.limit, 1);
+  assert.equal(result.pagination.offset, 1);
+
+  const invalidResponse = await fetch(`${baseUrl}/api/books?limit=0`);
+  assert.equal(invalidResponse.status, 400);
+});

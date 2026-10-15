@@ -17,7 +17,7 @@ A small REST API starter built with Node.js 20+ and Express. It manages an in-me
 | Method | Path | Description |
 | --- | --- | --- |
 | GET | `/api/health` | Health check |
-| GET | `/api/books` | List books |
+| GET | `/api/books` | List books; optional `limit` and `offset` query parameters |
 | GET | `/api/books/:id` | Get one book |
 | POST | `/api/books` | Create a book |
 | PUT | `/api/books/:id` | Replace a book's title and author |
@@ -30,3 +30,4 @@ curl -X POST http://localhost:3000/api/books -H "Content-Type: application/json"
 ```
 
 The API returns JSON. Missing resources return `404`, and invalid input returns `400`.
+For example, `/api/books?limit=10&offset=20` returns up to 10 books after skipping the first 20. The response includes pagination metadata; `limit` must be a positive integer and `offset` a non-negative integer.
