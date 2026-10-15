@@ -1,4 +1,4 @@
-# Selenium-Testing--Node
+# Selenium
 
 ## Node REST API
 
