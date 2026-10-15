@@ -1,0 +1,18 @@
+{
+  "name": "node-rest-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A starter REST API built with Node.js and Express.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
